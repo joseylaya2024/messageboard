@@ -3,25 +3,27 @@
 		<?php echo __('Conversations'); ?>
 	</h2>
 	<div class="chat-container" id="message-container">
-		<div class="chat-messages">
-			<div class="message recipient-message">
-				<img src="http://localhost/message-board/app/webroot/img/uploads/2024/04/03/660d14dd3debe-5.jpg"
-					class="recipient-picture" alt="Sender's Picture">
-				<div class="message-content-recipient">
-					<p>Hello! How can I assist you today?</p>
-				</div>
-			</div>
+		<div class="chat-header">
 
-			<div class="message sender-message">
-				<div class="message-content-sender">
-					<p>Hello! How can I assist you today?</p>
-				</div>
-				<img src="http://localhost/message-board/app/webroot/img/uploads/2024/04/03/660d14f8a36ed-images2.jpg"
-					class="sender-picture" alt="Sender's Picture">
-			</div>
+		</div>
+		<div class="chat-messages">
+			...
 		</div>
 		<div class="chat-input-container">
-			<input type="text" class="chat-input" placeholder="Type your message...">
+			<?php
+			echo $this->Form->create('Message', array(
+				'id' => 'convFormId',
+				'data-id' => 'convFormId',
+			));
+			echo $this->Form->hidden('recipientIid' ,array(
+				'id' => 'recipientIid',
+				'data-recipient-id' => 'recipientIid'
+			));
+			echo $this->Form->input('message', array('class' => 'chat-input', 'placeholder' => 'Type your message...'));
+			echo $this->Form->end('Submit');
+			?>
+
+
 		</div>
 	</div>
 </div>
@@ -30,7 +32,7 @@
 		<?php echo __('Inbox'); ?>
 	</h2>
 	<div class="contact-list">
-		<?php foreach ($user as $userData): ?>
+		<?php foreach ($users as $userData): ?>
 			<a href="#" class="contact-link" data-user-id="<?php echo $userData['User']['id']; ?>">
 				<div class="contact">
 					<img src="http://localhost/<?php echo $userData['User']['imageLink'] ?>" alt="Profile Picture">
@@ -45,7 +47,6 @@
 				</div>
 			</a>
 		<?php endforeach; ?>
-		<!-- Add more contacts as needed -->
 	</div>
 </div>
 
@@ -55,60 +56,108 @@
 			e.preventDefault();
 
 			var userId = $(this).data('user-id');
-			var chatMessagesContainer = $('.chat-messages');
+			var chatMsgsContainer = $('.chat-messages');
+			var chatMsgsHeaderContainer = $('.chat-header');
 
 			$.ajax({
 				url: 'http://localhost/message-board/conversations/getConversationById',
 				method: 'POST',
 				data: { userId: userId },
 				success: function (response) {
-					var jsonResponse = JSON.parse(response);
+					var respJson = JSON.parse(response);
+					var conv = respJson.messages;
+					chatMsgsHeaderContainer.empty();
+					chatMsgsContainer.empty();
 
-					var conversation = jsonResponse.conversation.Conversation;
-					var user1 = jsonResponse.conversation.User1;
-					var user2 = jsonResponse.conversation.User2;
-					var messages = jsonResponse.conversation.Messages;
+					var conversationId = conv.Conversation.id;
 
-					chatMessagesContainer.empty();
+					console.log(respJson.messages.User2);
 
-					messages.forEach(function (message) {
-						var senderId = message.Message.senderId;
-						var messageContent = message.Message.messageContent;
-						var senderName = (senderId === user1.id) ? user1.name : user2.name;
-						var messageClass = (senderId === user1.id) ? 'sender' : 'recipient';
+					$('#recipientIid').attr('data-sender-id', respJson.messages.User2.id);
 
-						var imageSrc = (senderId === user1.id) ? user1.imageLink : user2.imageLink;
-						var imageHtml = `<img src="http://localhost/${imageSrc}" class="${messageClass}-picture" alt="Picture">`;
+					$('#convFormId').attr('data-id', conversationId);
 
-						var messageHtml = `
-						<div class="message ${messageClass}-message">
-							${messageClass === 'sender' ? '' : imageHtml}
-							<div class="message-content-${messageClass}">
-								<p>${messageContent}</p>
+					if (respJson.status) {
+
+						var usr1 = conv.User1;
+						var usr2 = conv.User2;
+						var msgs = conv.Messages;
+
+						var msgHeaderHtml = `    
+						<img src="http://localhost/${conv.User2.imageLink}" class="profile-picture" alt="Profile Picture">
+							<div class="profile-info">
+								<h2>${conv.User2.name}</h2>
+								<p>online</p>
+							</div>`;
+
+						chatMsgsHeaderContainer.append(msgHeaderHtml);
+
+						msgs ? msgs.forEach(function (msg) {
+							var senderId = msg.Message.senderId;
+							var msgContent = msg.Message.messageContent;
+							var senderName = (senderId === usr1.id) ? usr1.name : usr2.name;
+							var msgClass = (senderId === usr1.id) ? 'sender' : 'recipient';
+
+							var imgSrc = (senderId === usr1.id) ? usr1.imageLink : usr2.imageLink;
+							var imgHtml = `<img src="http://localhost/${imgSrc}" class="${msgClass}-picture" alt="Picture">`;
+
+							var msgHtml = `
+							<div class="message ${msgClass}-message">
+								${msgClass === 'sender' ? '' : imgHtml}
+								<div class="message-content-${msgClass}">
+									<p>${msgContent}</p>
+								</div>
+								${msgClass === 'sender' ? imgHtml : ''}
 							</div>
-							${messageClass === 'sender' ? imageHtml : ''}
-						</div>
-					`;
+						`;
 
-						chatMessagesContainer.append(messageHtml);
-					});
+							chatMsgsContainer.append(msgHtml);
+						}) : null;
+					} else if (respJson.conversationCreated) {
+						var msgHeaderHtml = `    
+							<img src="http://localhost/${respJson.messages.User2.imageLink}" class="profile-picture" alt="Profile Picture">
+							<div class="profile-info">
+								<h2>${respJson.messages.User2.name}</h2>
+								<p>online</p>
+							</div>`;
+
+						chatMsgsHeaderContainer.append(msgHeaderHtml);
+					} else {
+						var msgHeaderHtml = `    
+							<img src="http://localhost/${conv.User2.imageLink}" class="profile-picture" alt="Profile Picture">
+							<div class="profile-info">
+								<h2>${conv.User2.name}</h2>
+								<p>online</p>
+							</div>`;
+
+						chatMsgsHeaderContainer.append(msgHeaderHtml);
+					}
 				},
 				error: function (xhr, status, error) {
 					console.error('AJAX request failed:', status, error);
-			
-					chatMessagesContainer.empty();
+				}
+			});
+		});
 
-					var messageHtml = `
-										<div class="message ${messageClass}-message">
-											${messageClass === 'sender' ? '' : imageHtml}
-											<div class="message-content-${messageClass}">
-												<p>${messageContent}</p>
-											</div>
-											${messageClass === 'sender' ? imageHtml : ''}
-										</div>
-									`;
+		$('#convFormId').submit(function (e) {
+			e.preventDefault();
+			var formData = $(this).serialize();
 
-					chatMessagesContainer.append(messageHtml);
+			var convIdVal = $(this).data('id');
+			var RecipientIdVal= $('#recipientIid').data('sender-id');
+
+			formData += '&conv-id=' + encodeURIComponent(convIdVal);
+			formData += '&recipient-id=' + encodeURIComponent(RecipientIdVal);
+
+			$.ajax({
+				url: 'http://localhost/message-board/messages/add',
+				method: 'POST',
+				data: formData,
+				success: function (response) {
+					// console.log(response);
+				},
+				error: function (xhr, status, error) {
+					console.error(xhr.responseText);
 				}
 			});
 		});

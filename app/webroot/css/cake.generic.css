@@ -938,58 +938,75 @@ pre {
 }
 
 .home-button {
-    display: inline-block;
-    padding: 10px 20px;
-    background-color: #007bff; /* Blue color */
-    color: #fff; /* White text color */
-    text-decoration: none; /* Remove underline */
-    border-radius: 5px;
-    transition: background-color 0.3s; /* Smooth color transition */
+	display: inline-block;
+	padding: 10px 20px;
+	background-color: #007bff;
+	/* Blue color */
+	color: #fff;
+	/* White text color */
+	text-decoration: none;
+	/* Remove underline */
+	border-radius: 5px;
+	transition: background-color 0.3s;
+	/* Smooth color transition */
 }
 
 .home-button:hover {
-	color: #fff; 
-    background-color: #0056b3; /* Darker blue color on hover */
+	color: #fff;
+	background-color: #0056b3;
+	/* Darker blue color on hover */
 }
 
 .contact-list {
-    width: 100%; /* Adjust the width as needed */
-    border: 1px solid #ccc;
-    border-radius: 5px;
-	max-height: 600px; /* Adjust the maximum height as needed */
-    overflow-y: auto; 
+	width: 100%;
+	/* Adjust the width as needed */
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	max-height: 600px;
+	/* Adjust the maximum height as needed */
+	overflow-y: auto;
 }
 
 .contact {
-    padding: 10px;
-    border-bottom: 1px solid #eee;
-    cursor: pointer; /* Change cursor to pointer to indicate clickable */
-    transition: background-color 0.3s; /* Smooth transition for hover effect */
+	padding: 10px;
+	border-bottom: 1px solid #eee;
+	cursor: pointer;
+	/* Change cursor to pointer to indicate clickable */
+	transition: background-color 0.3s;
+	/* Smooth transition for hover effect */
 }
 
 .contact:hover {
-    background-color: #f0f0f0; /* Add hover effect to the entire contact area */
+	background-color: #f0f0f0;
+	/* Add hover effect to the entire contact area */
 }
 
 .contact img {
-    width: 40px; /* Adjust the width of the profile picture */
-    height: 40px; /* Adjust the height of the profile picture */
-    border-radius: 50%; /* Make the profile picture circular */
-    margin-right: 10px;
+	width: 40px;
+	/* Adjust the width of the profile picture */
+	height: 40px;
+	/* Adjust the height of the profile picture */
+	border-radius: 50%;
+	/* Make the profile picture circular */
+	margin-right: 10px;
 }
 
 .contact-details {
-    display: inline-block; /* Ensure contact details wrap around the image */
+	display: inline-block;
+	/* Ensure contact details wrap around the image */
 }
 
 .contact-details .name,
 .contact-details .email {
-    display: block; /* Display name and email on separate lines */
+	display: block;
+	/* Display name and email on separate lines */
 }
 
 .contact-link {
-    text-decoration: none; /* Remove underline */
-    color: inherit; /* Inherit text color from parent */
+	text-decoration: none;
+	/* Remove underline */
+	color: inherit;
+	/* Inherit text color from parent */
 	border: unset;
 	padding: 0 !important;
 }
@@ -1004,58 +1021,58 @@ pre {
 
 
 .chat-container {
-    width: 100%;
-    margin: 20px auto;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
+	width: 100%;
+	margin: 20px auto;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	overflow: hidden;
+	display: flex;
+	flex-direction: column;
 }
 
 .chat-messages {
-    flex: 1;
-    overflow-y: auto;
-    padding: 20px;
+	flex: 1;
+	overflow-y: auto;
+	padding: 20px;
 }
 
 .message {
-    margin-bottom: 10px;
+	margin-bottom: 10px;
 }
 
 .message:last-child {
-    margin-bottom: 0;
+	margin-bottom: 0;
 }
 
 .sender-message {
-    background-color: #DCF8C6;
-    padding: 5px 10px;
-    border-radius: 5px;
+	background-color: #DCF8C6;
+	padding: 5px 10px;
+	border-radius: 5px;
 	float: right;
 	background: none;
 	border: none;
 }
 
 .recipient-message {
-    background-color: #E5E5EA;
-    padding: 5px 10px;
-    border-radius: 5px;
-    margin-right: 50px;
+	background-color: #E5E5EA;
+	padding: 5px 10px;
+	border-radius: 5px;
+	margin-right: 50px;
 	float: left;
 	background: none;
 	border: none;
 }
 
 .chat-input-container {
-    margin-top: auto;
+	margin-top: auto;
 }
 
 .chat-input {
-    width: calc(100% - 20px);
-    padding: 10px;
-    border: none;
-    border-top: 1px solid #ccc;
-    outline: none;
+	width: calc(100% - 20px);
+	padding: 10px;
+	border: none;
+	border-top: 1px solid #ccc;
+	outline: none;
 }
 
 .recipient-picture {
@@ -1064,6 +1081,7 @@ pre {
 	border-radius: 50%;
 	margin-right: 10px;
 }
+
 .sender-picture {
 	width: 30px;
 	height: 30px;
@@ -1072,23 +1090,81 @@ pre {
 }
 
 .message {
-    display: flex; /* Use flexbox to align items */
-    align-items: center; /* Center align items vertically */
+	display: flex;
+	/* Use flexbox to align items */
+	align-items: center;
+	/* Center align items vertically */
 }
 
 .message-content-recipient {
 	background: #00000088;
-    border-radius: 20px; 
-    padding: 10px;
+	border-radius: 20px;
+	padding: 10px;
 }
 
 .message-content-sender {
 	background: #c02214;
-    border-radius: 20px; 
-    padding: 10px;
+	border-radius: 20px;
+	padding: 10px;
 }
 
 .message p {
 	margin: 0;
 	font-size: 16px;
+}
+
+
+.container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 30vh;
+	/* Adjust as needed */
+}
+
+.user-info {
+	width: 300px;
+	height: 100px;
+	border: 2px solid #ccc;
+	border-radius: 10px;
+	display: flex;
+	align-items: center;
+	justify-content: space-around;
+	padding: 10px;
+}
+
+.profile-img {
+	width: 100px;
+	height: 100px;
+	border-radius: 50%;
+}
+
+.user-info .name {
+	font-size: 18px;
+}
+
+.chat-header {
+    background-color: #f2f2f2;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+}
+
+
+.profile-picture {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+}
+
+.profile-info {
+    margin-left: 20px;
+	background: none;
+}
+
+.profile-info h2{
+	background: none;
 }

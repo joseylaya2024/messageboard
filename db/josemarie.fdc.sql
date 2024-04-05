@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Apr 04, 2024 at 11:11 AM
+-- Generation Time: Apr 05, 2024 at 11:34 AM
 -- Server version: 10.4.21-MariaDB
 -- PHP Version: 7.4.29
 
@@ -40,12 +40,15 @@ CREATE TABLE `conversations` (
 
 INSERT INTO `conversations` (`id`, `userId_1`, `userId_2`, `createdAt`) VALUES
 (1, 5, 6, '2024-04-04 03:10:29'),
-(6, 5, 7, '2024-04-04 08:41:00'),
-(7, 5, 4, '2024-04-04 08:41:12'),
-(8, 5, 13, '2024-04-04 08:42:31'),
-(9, 5, 10, '2024-04-04 08:46:00'),
-(10, 5, 11, '2024-04-04 08:46:07'),
-(11, 5, 8, '2024-04-04 08:46:09');
+(113, 4, 5, '2024-04-05 07:08:14'),
+(114, 12, 5, '2024-04-05 07:39:12'),
+(115, 8, 5, '2024-04-05 07:41:43'),
+(116, 13, 5, '2024-04-05 07:41:47'),
+(117, 7, 5, '2024-04-05 07:42:41'),
+(118, 9, 5, '2024-04-05 08:03:45'),
+(119, 10, 5, '2024-04-05 08:03:48'),
+(120, 4, 6, '2024-04-05 09:22:35'),
+(121, 11, 5, '2024-04-05 09:24:13');
 
 -- --------------------------------------------------------
 
@@ -69,10 +72,14 @@ CREATE TABLE `messages` (
 
 INSERT INTO `messages` (`id`, `conversationId`, `senderId`, `recipientId`, `messageContent`, `createdAt`, `modifiedAt`) VALUES
 (1, 1, 5, 6, 'hello, this is test only please disregard', '2024-04-04 11:35:37', '2024-04-04 13:29:22'),
-(2, 1, 6, 5, 'hi, how can I help you?', '2024-04-04 13:27:39', '2024-04-04 13:29:22'),
-(3, 1, 6, 5, 'hello world', '2024-04-04 15:59:04', '2024-04-04 15:59:04'),
-(4, 1, 6, 5, 'loremm ipsum 123', '2024-04-04 15:59:43', '2024-04-04 15:59:43'),
-(5, 1, 5, 6, 'how old are you?', '2024-04-04 16:00:15', '2024-04-04 16:00:15');
+(6, 113, 5, 4, 'hello world', '2024-04-05 17:20:09', '2024-04-05 17:20:09'),
+(7, 113, 5, 4, 'test', '2024-04-05 17:20:36', '2024-04-05 17:20:36'),
+(8, 113, 5, 4, 'hey', '2024-04-05 17:21:04', '2024-04-05 17:21:04'),
+(9, 113, 5, 4, 'hey', '2024-04-05 17:21:04', '2024-04-05 17:21:04'),
+(10, 113, 5, 4, 'hey', '2024-04-05 17:21:08', '2024-04-05 17:21:08'),
+(11, 1, 5, 6, 'yow', '2024-04-05 17:21:59', '2024-04-05 17:21:59'),
+(12, 1, 5, 6, 'how are you?', '2024-04-05 17:22:05', '2024-04-05 17:22:05'),
+(13, 1, 6, 5, 'test', '2024-04-05 17:22:32', '2024-04-05 17:22:32');
 
 -- --------------------------------------------------------
 
@@ -105,7 +112,7 @@ INSERT INTO `users` (`id`, `name`, `email`, `username`, `password`, `imageLink`,
 (10, 'test4', 'test4@gmail.com', 'test4', 'ab9e8d013429df47fca682be2a36ee733a1afa9e', 'message-board/app/webroot/img/uploads/2024/04/03/660d150131462-istockphoto-1300512215-170667a.webp', '2024-04-03 13:47:25', '2024-04-03 13:47:25'),
 (11, 'test5', 'test4@gmail.com', 'test5', 'ab9e8d013429df47fca682be2a36ee733a1afa9e', 'message-board/app/webroot/img/uploads/2024/04/03/660d15096e4c3-istockphoto-1317804578-612x612.jpg', '2024-04-03 13:48:07', '2024-04-03 13:48:07'),
 (12, 'test6', 'jmtest@gmail.com', 'test6', 'ab9e8d013429df47fca682be2a36ee733a1afa9e', 'message-board/app/webroot/img/uploads/2024/04/03/660d1511a9db7-6.jpg', '2024-04-03 13:49:32', '2024-04-03 13:49:32'),
-(13, 'test7', 'jmtest@gmail.com', 'test7', 'ab9e8d013429df47fca682be2a36ee733a1afa9e', 'message-board/app/webroot/img/uploads/2024/04/03/660cfbc81c2f4-Screenshot_2024-04-03_at_10.30.11_AM.png', '2024-04-03 14:48:26', '2024-04-03 14:48:26');
+(13, 'test7', 'jmtest@gmail.com', 'test7', '0e597d44a5bafac2ddd0bf63bb1a48f07e15786e', 'message-board/app/webroot/img/uploads/2024/04/03/660cfbc81c2f4-Screenshot_2024-04-03_at_10.30.11_AM.png', '2024-04-03 14:48:26', '2024-04-03 14:48:26');
 
 --
 -- Indexes for dumped tables
@@ -137,13 +144,13 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `conversations`
 --
 ALTER TABLE `conversations`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=122;
 
 --
 -- AUTO_INCREMENT for table `messages`
 --
 ALTER TABLE `messages`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `users`

@@ -24,15 +24,22 @@ class ConversationsController extends AppController
 	 * @return void
 	 */
 
-	public function index()
-	{
-		$this->loadModel('User');
-
-		$users = $this->User->find('all');
-
-		$this->set('user', $users);
-	}
-
+	 public function index()
+	 {
+		 $this->loadModel('User');
+	 
+		 $currentUserId = AuthComponent::user('id');
+	 
+		 $users = $this->User->find('all', [
+			 'conditions' => [
+				 'User.id !=' => $currentUserId
+			 ]
+		 ]);
+	 
+		 $this->set('users', $users); 
+	 }
+	 
+	 
 
 	/**
 	 * view method
@@ -117,19 +124,20 @@ class ConversationsController extends AppController
 		return $this->redirect(array('action' => 'index'));
 
 	}
-	
+
 	public function getConversationById()
 	{
 		$this->autoRender = false;
-	
-		$userId_1 = $this->request->data['userId'];
-		$userId_2 = AuthComponent::user('id');
-	
+
+		$userId_1 = AuthComponent::user('id');
+		$userId_2 = $this->request->data['userId'];
+
+
 		$conversation = $this->Conversation->find('first', [
 			'conditions' => [
 				'OR' => [
 					['userId_1' => $userId_1, 'userId_2' => $userId_2],
-					['userId_1' => $userId_2, 'userId_2' => $userId_1]
+					['userId_1' => $userId_2, 'userId_2' => $userId_1],
 				]
 			],
 			'contain' => ['User'],
@@ -137,15 +145,25 @@ class ConversationsController extends AppController
 				'Conversation.id',
 				'Conversation.createdAt',
 				'User1.id',
+				'User1.name',
 				'User1.imageLink',
 				'User2.id',
+				'User2.name',
 				'User2.imageLink',
 			]
 		]);
-	
+
 		if ($conversation) {
-			$this->loadModel('Message');
+		if ($conversation['User1']['id'] !== AuthComponent::user('id')) {
+			$temp = $conversation['User1'];
+			$conversation['User1'] = $conversation['User2'];
+			$conversation['User2'] = $temp;
+		}
+
 	
+
+			$this->loadModel('Message');
+			
 			$messages = $this->Message->find('all', [
 				'conditions' => [
 					'Message.conversationId' => $conversation['Conversation']['id']
@@ -157,25 +175,43 @@ class ConversationsController extends AppController
 					'Message.messageContent',
 				]
 			]);
-	
-			$conversation['Messages'] = $messages;
-			if($messages){
+
+
+			if ($messages) {
+				$conversation['Messages'] = $messages;
+
 				$this->response->statusCode(200);
-				$this->response->body(json_encode(['conversation' => $conversation]));
-			}else{
-				$this->response->statusCode(404);
-				$this->response->body(json_encode(['error' => 'Conversation not found']));
+				$this->response->body(json_encode(['status' => true,  'conversationCreated' => false, 'messages' => $conversation]));
+			} else {
+				$this->response->statusCode(200);
+				$this->response->body(json_encode(['status' => false,  'conversationCreated' => false, 'messages' => $conversation]));
 			}
-			
+
 		} else {
 			$newConversation = $this->Conversation->create();
 			$newConversation['Conversation']['userId_1'] = $userId_2;
 			$newConversation['Conversation']['userId_2'] = $userId_1;
-	
+		
 			if ($this->Conversation->save($newConversation)) {
-				// Return the newly created conversation data
-				$this->response->statusCode(201);
-				$this->response->body(json_encode(['conversationCreated' => true, 'conversation' => $newConversation]));
+				$conversationId = $this->Conversation->getLastInsertID();
+				$this->loadModel('User');
+				
+				$user1 = $this->User->findById($userId_1);
+				$user2 = $this->User->findById($userId_2);
+		
+				if ($user1 && $user2) {
+					$conversationData = $newConversation;
+					$conversationData['Conversation']['id'] = $conversationId;
+					$conversationData['User1'] = $user1['User'];
+					$conversationData['User2'] = $user2['User'];
+		
+					$this->response->statusCode(200);
+					$this->response->body(json_encode(['status' => false, 'conversationCreated' => true, 'messages' => $conversationData]));
+				} else {
+					// Handle if user data couldn't be fetched
+					$this->response->statusCode(500);
+					$this->response->body(json_encode(['error' => 'Failed to fetch user data']));
+				}
 			} else {
 				$this->response->statusCode(500);
 				$this->response->body(json_encode(['error' => 'Failed to create conversation']));

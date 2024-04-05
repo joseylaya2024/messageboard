@@ -13,7 +13,7 @@ class MessagesController extends AppController {
  *
  * @var array
  */
-	public $components = array('Paginator');
+	public $components = array('Paginator', 'Flash');
 
 /**
  * index method
@@ -45,17 +45,33 @@ class MessagesController extends AppController {
  *
  * @return void
  */
-	public function add() {
-		if ($this->request->is('post')) {
-			$this->Message->create();
-			if ($this->Message->save($this->request->data)) {
-				$this->Flash->success(__('The message has been saved.'));
-				return $this->redirect(array('action' => 'index'));
-			} else {
-				$this->Flash->error(__('The message could not be saved. Please, try again.'));
-			}
-		}
-	}
+
+ public function add() {
+    if ($this->request->is('post')) {
+        $senderId = AuthComponent::user('id');
+        $convoId = $this->request->data['conv-id'];
+        $recipientId = $this->request->data['recipient-id'];
+        $messageContent = $this->request->data['Message']['message'];
+
+        $messageData = array(
+            'Message' => array(
+                'senderId' => $senderId,
+                'conversationId' => $convoId,
+                'recipientId' => $recipientId,
+                'messageContent' => $messageContent 
+            )
+        );
+
+        $this->Message->create();
+        if ($this->Message->save($messageData)) {
+            $this->Flash->success(__('The message has been saved.'));
+            return $this->redirect(array('action' => 'index'));
+        } else {
+            $this->Flash->error(__('The message could not be saved. Please, try again.'));
+        }
+    }
+}
+
 
 /**
  * edit method

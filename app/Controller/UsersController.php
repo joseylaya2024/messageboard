@@ -173,7 +173,7 @@ class UsersController extends AppController
 	public function uploadImage()
 	{
 		$this->autoRender = false;
-		$path = '/messageboard/img/uploads/'; // Path relative to the localhost root
+		$path = '/messageboard/img/uploads/';
 		$uploadDir = create_date_folder(WWW_ROOT . 'img/uploads/');
 		$image = $this->request->data['User']['image'];
 
@@ -186,7 +186,7 @@ class UsersController extends AppController
 		if (move_uploaded_file($image['tmp_name'], $filepath . $filename)) {
 			$userId = $this->request->data['userId'];
 			$user = $this->User->findById($userId);
-			$user['User']['imageLink'] = $imageLinkPath . $filename; // Concatenate the path with the filename
+			$user['User']['imageLink'] = $imageLinkPath . $filename; 
 			$this->User->save($user);
 
 			$this->response->type('json');
