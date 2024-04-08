@@ -46,7 +46,7 @@ class MessagesController extends AppController {
  * @return void
  */
 
- public function add() {
+public function add() {
     if ($this->request->is('post')) {
         $senderId = AuthComponent::user('id');
         $convoId = $this->request->data['conv-id'];
@@ -64,10 +64,17 @@ class MessagesController extends AppController {
 
         $this->Message->create();
         if ($this->Message->save($messageData)) {
-            $this->Flash->success(__('The message has been saved.'));
-            return $this->redirect(array('action' => 'index'));
+            $response = array(
+                'status' => true,
+                'conversationCreated' => false,
+                'message' => $messageData['Message'],
+                'conversationId' => $convoId 
+            );
+            $this->response->statusCode(200);
+            $this->response->body(json_encode($response));
         } else {
-            $this->Flash->error(__('The message could not be saved. Please, try again.'));
+            $this->response->statusCode(500);
+            $this->response->body(json_encode(['status' => false]));
         }
     }
 }

@@ -124,15 +124,13 @@ class ConversationsController extends AppController
 		return $this->redirect(array('action' => 'index'));
 
 	}
-
 	public function getConversationById()
 	{
 		$this->autoRender = false;
-
+	
 		$userId_1 = AuthComponent::user('id');
 		$userId_2 = $this->request->data['userId'];
-
-
+	
 		$conversation = $this->Conversation->find('first', [
 			'conditions' => [
 				'OR' => [
@@ -152,18 +150,19 @@ class ConversationsController extends AppController
 				'User2.imageLink',
 			]
 		]);
-
-		if ($conversation) {
-		if ($conversation['User1']['id'] !== AuthComponent::user('id')) {
-			$temp = $conversation['User1'];
-			$conversation['User1'] = $conversation['User2'];
-			$conversation['User2'] = $temp;
-		}
-
 	
-
+		if ($conversation) {
+			if ($conversation['User1']['id'] !== $userId_1) {
+				// Swap users
+				[$conversation['User1'], $conversation['User2']] = [$conversation['User2'], $conversation['User1']];
+			}
+	
 			$this->loadModel('Message');
-			
+
+			$offset = isset($_POST['offset']) ? intval($_POST['offset']) : 0;
+		
+			$paginationLimit = 5; 
+
 			$messages = $this->Message->find('all', [
 				'conditions' => [
 					'Message.conversationId' => $conversation['Conversation']['id']
@@ -173,52 +172,62 @@ class ConversationsController extends AppController
 					'Message.senderId',
 					'Message.recipientId',
 					'Message.messageContent',
-				]
+				],
+				'limit' => $paginationLimit,
+				'offset' => $offset,
+				'order' => ['Message.id' => 'DESC']
 			]);
-
+			$messages = array_reverse($messages);
+			$response = [
+				'status' => true,
+				'conversationCreated' => false,
+				'messages' => $conversation
+			];
 
 			if ($messages) {
-				$conversation['Messages'] = $messages;
-
-				$this->response->statusCode(200);
-				$this->response->body(json_encode(['status' => true,  'conversationCreated' => false, 'messages' => $conversation]));
-			} else {
-				$this->response->statusCode(200);
-				$this->response->body(json_encode(['status' => false,  'conversationCreated' => false, 'messages' => $conversation]));
+				$response['messages']['Messages'] = $messages;
 			}
-
+	
+			$statusCode = 200;
 		} else {
+			// Create new conversation
 			$newConversation = $this->Conversation->create();
 			$newConversation['Conversation']['userId_1'] = $userId_2;
 			$newConversation['Conversation']['userId_2'] = $userId_1;
-		
+	
 			if ($this->Conversation->save($newConversation)) {
 				$conversationId = $this->Conversation->getLastInsertID();
 				$this->loadModel('User');
-				
 				$user1 = $this->User->findById($userId_1);
 				$user2 = $this->User->findById($userId_2);
-		
+	
 				if ($user1 && $user2) {
 					$conversationData = $newConversation;
 					$conversationData['Conversation']['id'] = $conversationId;
 					$conversationData['User1'] = $user1['User'];
 					$conversationData['User2'] = $user2['User'];
-		
-					$this->response->statusCode(200);
-					$this->response->body(json_encode(['status' => false, 'conversationCreated' => true, 'messages' => $conversationData]));
+	
+					$response = [
+						'status' => true,
+						'conversationCreated' => true,
+						'messages' => $conversationData
+					];
+	
+					$statusCode = 200;
 				} else {
-					// Handle if user data couldn't be fetched
-					$this->response->statusCode(500);
-					$this->response->body(json_encode(['error' => 'Failed to fetch user data']));
+					$response = ['error' => 'Failed to fetch user data'];
+					$statusCode = 500;
 				}
 			} else {
-				$this->response->statusCode(500);
-				$this->response->body(json_encode(['error' => 'Failed to create conversation']));
+				$response = ['error' => 'Failed to create conversation'];
+				$statusCode = 500;
 			}
 		}
+
+		$this->response->statusCode($statusCode);
+		$this->response->body(json_encode($response));
 		return $this->response;
-	}
+	}	
 }
 
 

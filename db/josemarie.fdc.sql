@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Apr 05, 2024 at 11:34 AM
+-- Generation Time: Apr 08, 2024 at 11:35 AM
 -- Server version: 10.4.21-MariaDB
 -- PHP Version: 7.4.29
 
@@ -48,7 +48,11 @@ INSERT INTO `conversations` (`id`, `userId_1`, `userId_2`, `createdAt`) VALUES
 (118, 9, 5, '2024-04-05 08:03:45'),
 (119, 10, 5, '2024-04-05 08:03:48'),
 (120, 4, 6, '2024-04-05 09:22:35'),
-(121, 11, 5, '2024-04-05 09:24:13');
+(121, 11, 5, '2024-04-05 09:24:13'),
+(122, 7, 6, '2024-04-08 03:08:44'),
+(123, 8, 6, '2024-04-08 03:08:45'),
+(124, 9, 6, '2024-04-08 05:19:20'),
+(125, 10, 6, '2024-04-08 06:04:47');
 
 -- --------------------------------------------------------
 
@@ -79,7 +83,28 @@ INSERT INTO `messages` (`id`, `conversationId`, `senderId`, `recipientId`, `mess
 (10, 113, 5, 4, 'hey', '2024-04-05 17:21:08', '2024-04-05 17:21:08'),
 (11, 1, 5, 6, 'yow', '2024-04-05 17:21:59', '2024-04-05 17:21:59'),
 (12, 1, 5, 6, 'how are you?', '2024-04-05 17:22:05', '2024-04-05 17:22:05'),
-(13, 1, 6, 5, 'test', '2024-04-05 17:22:32', '2024-04-05 17:22:32');
+(13, 1, 6, 5, 'test', '2024-04-05 17:22:32', '2024-04-05 17:22:32'),
+(14, 1, 5, 6, 'yow', '2024-04-08 09:13:43', '2024-04-08 09:13:43'),
+(15, 1, 5, 6, 'this is testing', '2024-04-08 09:23:36', '2024-04-08 09:23:36'),
+(16, 1, 5, 6, 'hey', '2024-04-08 09:24:20', '2024-04-08 09:24:20'),
+(17, 1, 5, 6, 'test', '2024-04-08 09:27:16', '2024-04-08 09:27:16'),
+(18, 1, 5, 6, 'test', '2024-04-08 09:27:35', '2024-04-08 09:27:35'),
+(19, 1, 5, 6, 'hey', '2024-04-08 09:37:09', '2024-04-08 09:37:09'),
+(20, 1, 5, 6, '123', '2024-04-08 09:40:05', '2024-04-08 09:40:05'),
+(21, 113, 5, 4, 'check', '2024-04-08 09:49:34', '2024-04-08 09:49:34'),
+(22, 113, 5, 4, 'mic', '2024-04-08 09:49:41', '2024-04-08 09:49:41'),
+(23, 115, 5, 8, 'hi', '2024-04-08 09:51:00', '2024-04-08 09:51:00'),
+(24, 117, 5, 7, 'hi', '2024-04-08 09:59:17', '2024-04-08 09:59:17'),
+(25, 1, 6, 5, 'ASDSADASDasDSadasdsadsadsdsahdsdhsahdsahdshdhshdhsdhdshshdhshdshdshdshdshdshdhdshdshdshshdh', '2024-04-08 11:05:16', '2024-04-08 11:05:16'),
+(26, 1, 6, 5, 'ASDSADASDasDSadasdsadsadsdsahdsdhsahdsahdshdhshdhsdhdshshdhshdshdshdshdshdshdhdshdshdshshdhASDSADASDasDSadasdsadsadsdsahdsdhsahdsahdshdhshdhsdhdshshdhshdshdshdshdshdshdhdshdshdshshdhASDSADASDasDSadasdsadsadsdsahdsdhsahdsahdshdhshdhsdhdshshdhshdshdshdshdshdshdhdshdshdshshdh', '2024-04-08 11:05:23', '2024-04-08 11:05:23'),
+(27, 1, 6, 5, 'test', '2024-04-08 11:10:10', '2024-04-08 11:10:10'),
+(28, 1, 6, 5, 'hey', '2024-04-08 13:21:23', '2024-04-08 13:21:23'),
+(29, 1, 6, 5, 'yo', '2024-04-08 13:22:05', '2024-04-08 13:22:05'),
+(30, 120, 6, 4, 'hi', '2024-04-08 13:22:33', '2024-04-08 13:22:33'),
+(31, 1, 5, 6, 'yo', '2024-04-08 13:23:25', '2024-04-08 13:23:25'),
+(32, 1, 6, 5, 'hey', '2024-04-08 14:10:33', '2024-04-08 14:10:33'),
+(33, 1, 5, 6, 'hey', '2024-04-08 16:40:42', '2024-04-08 16:40:42'),
+(34, 1, 5, 6, 'hey', '2024-04-08 16:40:47', '2024-04-08 16:40:47');
 
 -- --------------------------------------------------------
 
@@ -144,13 +169,13 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `conversations`
 --
 ALTER TABLE `conversations`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=122;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=126;
 
 --
 -- AUTO_INCREMENT for table `messages`
 --
 ALTER TABLE `messages`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
 
 --
 -- AUTO_INCREMENT for table `users`

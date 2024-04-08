@@ -1168,3 +1168,22 @@ pre {
 .profile-info h2{
 	background: none;
 }
+
+.chat-pagination {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 20px; /* Adjust the border-radius for pill shape */
+    background-color: transparent; /* Set background color to transparent */
+    color: #007bff; /* Button text color */
+    text-decoration: none; /* Remove default underline for links */
+    transition: color 0.3s; /* Smooth transition for color change on hover */
+    border: 2px solid #007bff; /* Add border to create a border-style button */
+}
+
+.chat-pagination:hover {
+    color: #0056b3; /* Darker text color on hover */
+}
+
+.center {
+    text-align: center; 
+}
