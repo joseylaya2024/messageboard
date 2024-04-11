@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Apr 08, 2024 at 11:35 AM
+-- Generation Time: Apr 11, 2024 at 10:56 AM
 -- Server version: 10.4.21-MariaDB
 -- PHP Version: 7.4.29
 
@@ -39,20 +39,8 @@ CREATE TABLE `conversations` (
 --
 
 INSERT INTO `conversations` (`id`, `userId_1`, `userId_2`, `createdAt`) VALUES
-(1, 5, 6, '2024-04-04 03:10:29'),
-(113, 4, 5, '2024-04-05 07:08:14'),
-(114, 12, 5, '2024-04-05 07:39:12'),
-(115, 8, 5, '2024-04-05 07:41:43'),
-(116, 13, 5, '2024-04-05 07:41:47'),
-(117, 7, 5, '2024-04-05 07:42:41'),
-(118, 9, 5, '2024-04-05 08:03:45'),
-(119, 10, 5, '2024-04-05 08:03:48'),
-(120, 4, 6, '2024-04-05 09:22:35'),
-(121, 11, 5, '2024-04-05 09:24:13'),
-(122, 7, 6, '2024-04-08 03:08:44'),
-(123, 8, 6, '2024-04-08 03:08:45'),
-(124, 9, 6, '2024-04-08 05:19:20'),
-(125, 10, 6, '2024-04-08 06:04:47');
+(130, 6, 5, '2024-04-11 05:48:04'),
+(131, 4, 5, '2024-04-11 06:29:34');
 
 -- --------------------------------------------------------
 
@@ -75,36 +63,8 @@ CREATE TABLE `messages` (
 --
 
 INSERT INTO `messages` (`id`, `conversationId`, `senderId`, `recipientId`, `messageContent`, `createdAt`, `modifiedAt`) VALUES
-(1, 1, 5, 6, 'hello, this is test only please disregard', '2024-04-04 11:35:37', '2024-04-04 13:29:22'),
-(6, 113, 5, 4, 'hello world', '2024-04-05 17:20:09', '2024-04-05 17:20:09'),
-(7, 113, 5, 4, 'test', '2024-04-05 17:20:36', '2024-04-05 17:20:36'),
-(8, 113, 5, 4, 'hey', '2024-04-05 17:21:04', '2024-04-05 17:21:04'),
-(9, 113, 5, 4, 'hey', '2024-04-05 17:21:04', '2024-04-05 17:21:04'),
-(10, 113, 5, 4, 'hey', '2024-04-05 17:21:08', '2024-04-05 17:21:08'),
-(11, 1, 5, 6, 'yow', '2024-04-05 17:21:59', '2024-04-05 17:21:59'),
-(12, 1, 5, 6, 'how are you?', '2024-04-05 17:22:05', '2024-04-05 17:22:05'),
-(13, 1, 6, 5, 'test', '2024-04-05 17:22:32', '2024-04-05 17:22:32'),
-(14, 1, 5, 6, 'yow', '2024-04-08 09:13:43', '2024-04-08 09:13:43'),
-(15, 1, 5, 6, 'this is testing', '2024-04-08 09:23:36', '2024-04-08 09:23:36'),
-(16, 1, 5, 6, 'hey', '2024-04-08 09:24:20', '2024-04-08 09:24:20'),
-(17, 1, 5, 6, 'test', '2024-04-08 09:27:16', '2024-04-08 09:27:16'),
-(18, 1, 5, 6, 'test', '2024-04-08 09:27:35', '2024-04-08 09:27:35'),
-(19, 1, 5, 6, 'hey', '2024-04-08 09:37:09', '2024-04-08 09:37:09'),
-(20, 1, 5, 6, '123', '2024-04-08 09:40:05', '2024-04-08 09:40:05'),
-(21, 113, 5, 4, 'check', '2024-04-08 09:49:34', '2024-04-08 09:49:34'),
-(22, 113, 5, 4, 'mic', '2024-04-08 09:49:41', '2024-04-08 09:49:41'),
-(23, 115, 5, 8, 'hi', '2024-04-08 09:51:00', '2024-04-08 09:51:00'),
-(24, 117, 5, 7, 'hi', '2024-04-08 09:59:17', '2024-04-08 09:59:17'),
-(25, 1, 6, 5, 'ASDSADASDasDSadasdsadsadsdsahdsdhsahdsahdshdhshdhsdhdshshdhshdshdshdshdshdshdhdshdshdshshdh', '2024-04-08 11:05:16', '2024-04-08 11:05:16'),
-(26, 1, 6, 5, 'ASDSADASDasDSadasdsadsadsdsahdsdhsahdsahdshdhshdhsdhdshshdhshdshdshdshdshdshdhdshdshdshshdhASDSADASDasDSadasdsadsadsdsahdsdhsahdsahdshdhshdhsdhdshshdhshdshdshdshdshdshdhdshdshdshshdhASDSADASDasDSadasdsadsadsdsahdsdhsahdsahdshdhshdhsdhdshshdhshdshdshdshdshdshdhdshdshdshshdh', '2024-04-08 11:05:23', '2024-04-08 11:05:23'),
-(27, 1, 6, 5, 'test', '2024-04-08 11:10:10', '2024-04-08 11:10:10'),
-(28, 1, 6, 5, 'hey', '2024-04-08 13:21:23', '2024-04-08 13:21:23'),
-(29, 1, 6, 5, 'yo', '2024-04-08 13:22:05', '2024-04-08 13:22:05'),
-(30, 120, 6, 4, 'hi', '2024-04-08 13:22:33', '2024-04-08 13:22:33'),
-(31, 1, 5, 6, 'yo', '2024-04-08 13:23:25', '2024-04-08 13:23:25'),
-(32, 1, 6, 5, 'hey', '2024-04-08 14:10:33', '2024-04-08 14:10:33'),
-(33, 1, 5, 6, 'hey', '2024-04-08 16:40:42', '2024-04-08 16:40:42'),
-(34, 1, 5, 6, 'hey', '2024-04-08 16:40:47', '2024-04-08 16:40:47');
+(37, 131, 5, 4, 'hey', '2024-04-11 14:29:40', '2024-04-11 14:29:40'),
+(40, 130, 5, 6, 'how are you?', '2024-04-11 16:48:08', '2024-04-11 16:48:08');
 
 -- --------------------------------------------------------
 
@@ -137,7 +97,13 @@ INSERT INTO `users` (`id`, `name`, `email`, `username`, `password`, `imageLink`,
 (10, 'test4', 'test4@gmail.com', 'test4', 'ab9e8d013429df47fca682be2a36ee733a1afa9e', 'message-board/app/webroot/img/uploads/2024/04/03/660d150131462-istockphoto-1300512215-170667a.webp', '2024-04-03 13:47:25', '2024-04-03 13:47:25'),
 (11, 'test5', 'test4@gmail.com', 'test5', 'ab9e8d013429df47fca682be2a36ee733a1afa9e', 'message-board/app/webroot/img/uploads/2024/04/03/660d15096e4c3-istockphoto-1317804578-612x612.jpg', '2024-04-03 13:48:07', '2024-04-03 13:48:07'),
 (12, 'test6', 'jmtest@gmail.com', 'test6', 'ab9e8d013429df47fca682be2a36ee733a1afa9e', 'message-board/app/webroot/img/uploads/2024/04/03/660d1511a9db7-6.jpg', '2024-04-03 13:49:32', '2024-04-03 13:49:32'),
-(13, 'test7', 'jmtest@gmail.com', 'test7', '0e597d44a5bafac2ddd0bf63bb1a48f07e15786e', 'message-board/app/webroot/img/uploads/2024/04/03/660cfbc81c2f4-Screenshot_2024-04-03_at_10.30.11_AM.png', '2024-04-03 14:48:26', '2024-04-03 14:48:26');
+(13, 'test7', 'jmtest@gmail.com', 'test7', '0e597d44a5bafac2ddd0bf63bb1a48f07e15786e', 'message-board/app/webroot/img/uploads/2024/04/03/660cfbc81c2f4-Screenshot_2024-04-03_at_10.30.11_AM.png', '2024-04-03 14:48:26', '2024-04-03 14:48:26'),
+(14, 'rwqewewq', 'ewqeqwewqdsa@dsadas.dsadsa', 'dsadsa', 'ab9e8d013429df47fca682be2a36ee733a1afa9e', NULL, '2024-04-11 11:40:03', '2024-04-11 11:40:03'),
+(15, 'rwqewewq', 'ewqeqdsadasdsawewqdsa@dsaddsadsadsaas.dsadsa', 'dsadsa', 'ab9e8d013429df47fca682be2a36ee733a1afa9e', NULL, '2024-04-11 11:42:00', '2024-04-11 11:42:00'),
+(16, 'dsadsa', 'dasdsadsa312321@dsadas.dsadas', 'dsadsa', '4bff0c24ccce31f01b611c0e937013c9d1895f50', NULL, '2024-04-11 11:42:33', '2024-04-11 11:42:33'),
+(17, 'dsadsadsaewqewq', 'ewqeqwewq@dsadasxzcx.dsadsadsa', 'dsadsa', '87f182217f947a9041e4dfbf2d3c8560b2e28c84', NULL, '2024-04-11 11:44:40', '2024-04-11 11:44:40'),
+(18, 'xcxzcxzc', 'cxcxzcxz@dsadxzcxz.comdsadsa', 'dasdasdsa', 'ab9e8d013429df47fca682be2a36ee733a1afa9e', NULL, '2024-04-11 11:49:24', '2024-04-11 11:49:24'),
+(19, 'dsadas', 'dsadas@mdsadasds.dsada', 'dsadasda', 'ab9e8d013429df47fca682be2a36ee733a1afa9e', NULL, '2024-04-11 11:49:55', '2024-04-11 11:49:55');
 
 --
 -- Indexes for dumped tables
@@ -169,19 +135,19 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `conversations`
 --
 ALTER TABLE `conversations`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=126;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=132;
 
 --
 -- AUTO_INCREMENT for table `messages`
 --
 ALTER TABLE `messages`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

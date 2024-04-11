@@ -6,33 +6,36 @@ App::uses('AppController', 'Controller');
  * @property Message $Message
  * @property PaginatorComponent $Paginator
  */
-class MessagesController extends AppController {
+class MessagesController extends AppController
+{
 
-/**
- * Components
- *
- * @var array
- */
+	/**
+	 * Components
+	 *
+	 * @var array
+	 */
 	public $components = array('Paginator', 'Flash');
 
-/**
- * index method
- *
- * @return void
- */
-	public function index() {
+	/**
+	 * index method
+	 *
+	 * @return void
+	 */
+	public function index()
+	{
 		$this->Message->recursive = 0;
 		$this->set('messages', $this->Paginator->paginate());
 	}
 
-/**
- * view method
- *
- * @throws NotFoundException
- * @param string $id
- * @return void
- */
-	public function view($id = null) {
+	/**
+	 * view method
+	 *
+	 * @throws NotFoundException
+	 * @param string $id
+	 * @return void
+	 */
+	public function view($id = null)
+	{
 		if (!$this->Message->exists($id)) {
 			throw new NotFoundException(__('Invalid message'));
 		}
@@ -40,54 +43,56 @@ class MessagesController extends AppController {
 		$this->set('message', $this->Message->find('first', $options));
 	}
 
-/**
- * add method
- *
- * @return void
- */
+	/**
+	 * add method
+	 *
+	 * @return void
+	 */
 
-public function add() {
-    if ($this->request->is('post')) {
-        $senderId = AuthComponent::user('id');
-        $convoId = $this->request->data['conv-id'];
-        $recipientId = $this->request->data['recipient-id'];
-        $messageContent = $this->request->data['Message']['message'];
+	public function add()
+	{
+		if ($this->request->is('post')) {
+			$senderId = AuthComponent::user('id');
+			$convoId = $this->request->data['conv-id'];
+			$recipientId = $this->request->data['recipient-id'];
+			$messageContent = $this->request->data['Message']['message'];
 
-        $messageData = array(
-            'Message' => array(
-                'senderId' => $senderId,
-                'conversationId' => $convoId,
-                'recipientId' => $recipientId,
-                'messageContent' => $messageContent 
-            )
-        );
+			$messageData = array(
+				'Message' => array(
+					'senderId' => $senderId,
+					'conversationId' => $convoId,
+					'recipientId' => $recipientId,
+					'messageContent' => $messageContent
+				)
+			);
 
-        $this->Message->create();
-        if ($this->Message->save($messageData)) {
-            $response = array(
-                'status' => true,
-                'conversationCreated' => false,
-                'message' => $messageData['Message'],
-                'conversationId' => $convoId 
-            );
-            $this->response->statusCode(200);
-            $this->response->body(json_encode($response));
-        } else {
-            $this->response->statusCode(500);
-            $this->response->body(json_encode(['status' => false]));
-        }
-    }
-}
+			$this->Message->create();
+			if ($this->Message->save($messageData)) {
+				$response = array(
+					'status' => true,
+					'conversationCreated' => false,
+					'message' => $messageData['Message'],
+					'conversationId' => $convoId
+				);
+				$this->response->statusCode(200);
+				$this->response->body(json_encode($response));
+			} else {
+				$this->response->statusCode(500);
+				$this->response->body(json_encode(['status' => false]));
+			}
+		}
+	}
 
 
-/**
- * edit method
- *
- * @throws NotFoundException
- * @param string $id
- * @return void
- */
-	public function edit($id = null) {
+	/**
+	 * edit method
+	 *
+	 * @throws NotFoundException
+	 * @param string $id
+	 * @return void
+	 */
+	public function edit($id = null)
+	{
 		if (!$this->Message->exists($id)) {
 			throw new NotFoundException(__('Invalid message'));
 		}
@@ -104,23 +109,34 @@ public function add() {
 		}
 	}
 
-/**
- * delete method
- *
- * @throws NotFoundException
- * @param string $id
- * @return void
- */
-	public function delete($id = null) {
+	/**
+	 * delete method
+	 *
+	 * @throws NotFoundException
+	 * @param string $id
+	 * @return void
+	 */
+	public function delete($id = null)
+	{
+		$this->autoRender = false;
+		$this->response->type('json');
+
+		if (!$this->request->is('ajax')) {
+			throw new MethodNotAllowedException();
+		}
+
 		if (!$this->Message->exists($id)) {
-			throw new NotFoundException(__('Invalid message'));
+			$this->response->statusCode(404);
+			echo json_encode(['success' => false, 'message' => 'Invalid conversation']);
+			return;
 		}
-		$this->request->allowMethod('post', 'delete');
+
 		if ($this->Message->delete($id)) {
-			$this->Flash->success(__('The message has been deleted.'));
+			echo json_encode(['success' => true, 'message' => 'The conversation has been deleted.']);
 		} else {
-			$this->Flash->error(__('The message could not be deleted. Please, try again.'));
+			$this->response->statusCode(500);
+			echo json_encode(['success' => false, 'message' => 'The conversation could not be deleted.']);
 		}
-		return $this->redirect(array('action' => 'index'));
 	}
+
 }

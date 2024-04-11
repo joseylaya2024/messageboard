@@ -10,36 +10,68 @@ App::uses('MessagesController', 'Controller');
  */
 class ConversationsController extends AppController
 {
-
 	/**
 	 * Components
 	 *
 	 * @var array
 	 */
 	public $components = array('Paginator');
-
 	/**
 	 * index method
 	 *
 	 * @return void
 	 */
+	public function index()
+	{
+		$this->loadModel('User');
+	
+		$currentUserId = AuthComponent::user('id');
+		$conversations = $this->Conversation->find('all', array(
+			'conditions' => array(
+				'OR' => array(
+					'Conversation.userId_1' => $currentUserId,
+					'Conversation.userId_2' => $currentUserId
+				)
+			),
+			'contain' => array(
+				'User1',
+				'User2'
+			)
+		));
+	
+		$users = array();
+		foreach ($conversations as $conversation) {
+			if ($conversation['Conversation']['userId_1'] != $currentUserId) {
+				$users[] = $conversation['User1'];
+			} else {
+				$users[] = $conversation['User2'];
+			}
+		}
+	
+		$this->set('users', $users);
+	}
+	
+	public function searchUser()
+	{
+		$this->autoRender = false;
+		$this->loadModel('User');
+		$currentUserId = AuthComponent::user('id');
+	
+		$searchText = $this->request->data['searchText']; // Use data array to retrieve POST data
+	
+		$users = $this->User->find('all', [
+			'conditions' => [
+				'User.id !=' => $currentUserId,
+				'OR' => [
+					'LOWER(User.name) LIKE' => '%' . strtolower($searchText) . '%',
+					'LOWER(User.email) LIKE' => '%' . strtolower($searchText) . '%',
+				]
+			],
+			'fields' => ['User.id', 'User.name', 'User.email', 'User.imageLink']
+		]);
 
-	 public function index()
-	 {
-		 $this->loadModel('User');
-	 
-		 $currentUserId = AuthComponent::user('id');
-	 
-		 $users = $this->User->find('all', [
-			 'conditions' => [
-				 'User.id !=' => $currentUserId
-			 ]
-		 ]);
-	 
-		 $this->set('users', $users); 
-	 }
-	 
-	 
+		$this->response->body(json_encode($users));
+	}
 
 	/**
 	 * view method
@@ -127,10 +159,10 @@ class ConversationsController extends AppController
 	public function getConversationById()
 	{
 		$this->autoRender = false;
-	
+
 		$userId_1 = AuthComponent::user('id');
 		$userId_2 = $this->request->data['userId'];
-	
+
 		$conversation = $this->Conversation->find('first', [
 			'conditions' => [
 				'OR' => [
@@ -145,23 +177,25 @@ class ConversationsController extends AppController
 				'User1.id',
 				'User1.name',
 				'User1.imageLink',
+				'User1.createdAt',
 				'User2.id',
 				'User2.name',
 				'User2.imageLink',
+				'User2.createdAt',
 			]
 		]);
-	
+
 		if ($conversation) {
 			if ($conversation['User1']['id'] !== $userId_1) {
 				// Swap users
 				[$conversation['User1'], $conversation['User2']] = [$conversation['User2'], $conversation['User1']];
 			}
-	
+
 			$this->loadModel('Message');
 
 			$offset = isset($_POST['offset']) ? intval($_POST['offset']) : 0;
-		
-			$paginationLimit = 5; 
+
+			$paginationLimit = 5;
 
 			$messages = $this->Message->find('all', [
 				'conditions' => [
@@ -169,6 +203,7 @@ class ConversationsController extends AppController
 				],
 				'contain' => ['User'],
 				'fields' => [
+					'Message.id',
 					'Message.senderId',
 					'Message.recipientId',
 					'Message.messageContent',
@@ -187,32 +222,32 @@ class ConversationsController extends AppController
 			if ($messages) {
 				$response['messages']['Messages'] = $messages;
 			}
-	
+
 			$statusCode = 200;
 		} else {
 			// Create new conversation
 			$newConversation = $this->Conversation->create();
 			$newConversation['Conversation']['userId_1'] = $userId_2;
 			$newConversation['Conversation']['userId_2'] = $userId_1;
-	
+
 			if ($this->Conversation->save($newConversation)) {
 				$conversationId = $this->Conversation->getLastInsertID();
 				$this->loadModel('User');
 				$user1 = $this->User->findById($userId_1);
 				$user2 = $this->User->findById($userId_2);
-	
+
 				if ($user1 && $user2) {
 					$conversationData = $newConversation;
 					$conversationData['Conversation']['id'] = $conversationId;
 					$conversationData['User1'] = $user1['User'];
 					$conversationData['User2'] = $user2['User'];
-	
+
 					$response = [
 						'status' => true,
 						'conversationCreated' => true,
 						'messages' => $conversationData
 					];
-	
+
 					$statusCode = 200;
 				} else {
 					$response = ['error' => 'Failed to fetch user data'];
@@ -227,7 +262,7 @@ class ConversationsController extends AppController
 		$this->response->statusCode($statusCode);
 		$this->response->body(json_encode($response));
 		return $this->response;
-	}	
+	}
 }
 
 

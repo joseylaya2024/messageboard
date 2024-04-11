@@ -23,6 +23,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 <head>
 
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
 	<?php echo $this->Html->charset(); ?>
 	<title>
@@ -50,8 +51,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 
 				<?php
 				if (AuthComponent::user()) { ?>
-					<a href="http://localhost/message-board/">Home</a>
-					<a href="http://localhost/message-board/users">Contact</a>
+					<a href="http://localhost/message-board/">Chats</a>
 					<div class="right-nav">
 						<a href="http://localhost/message-board/users/viewProfile">
 							<?php echo AuthComponent::user('name') ?>

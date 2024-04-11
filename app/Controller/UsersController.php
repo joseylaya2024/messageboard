@@ -76,6 +76,11 @@ class UsersController extends AppController
 	public function add()
 	{
 		if ($this->request->is('post')) {
+			if ($this->request->data['User']['password'] !== $this->request->data['User']['confirm_password']) {
+				$this->Flash->error(__('Passwords do not match.'));
+				return;
+			}
+			
 			$this->User->create();
 			$this->request->data['User']['password'] = AuthComponent::password($this->request->data['User']['password']);
 			if ($this->User->save($this->request->data)) {
@@ -150,7 +155,6 @@ class UsersController extends AppController
 			return null;
 		}
 	}
-
 
 	public function login()
 	{
